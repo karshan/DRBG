@@ -192,11 +192,7 @@ instance CryptoRandomGen HmacDRBG where
                 in case res of
                         Nothing -> Left NeedReseed
                         Just (r,s) -> Right (r, s)
-        reseed ent g =
-                let res = M.reseed g ent B.empty
-                in if B.length ent < genSeedLength `for` res
-                        then Left NotEnoughEntropy
-                        else Right res
+        reseed ent g = Right $ M.reseed g ent B.empty
 
         reseedInfo s = InXCalls (M.counter s)
         reseedPeriod _ = InXCalls M.reseedInterval
